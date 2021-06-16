@@ -11,14 +11,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use PhpParser\Node\Expr\AssignOp\Concat;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class PesananController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function getPesanan(){
         $pesanan = Pesanan::where('user_id', auth()->user()->id)->where('status', 0)->first();
         
@@ -37,6 +33,7 @@ class PesananController extends Controller
             ];
             return view('pages/customer/cart', $data);
         }
+
         return view('pages/customer/cart');
     }
 

@@ -10,11 +10,6 @@ use SweetAlert;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function profile(){
         $user = User::where('id', auth()->user()->id)->first();
         $data = [

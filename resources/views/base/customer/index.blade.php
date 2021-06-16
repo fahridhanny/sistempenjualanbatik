@@ -52,14 +52,14 @@
 
 </head>
 <body class="js">
-
-	@include('sweet::alert')
 	
 	@include('layout/customer/header')
 	
 	@yield('content')
 	
 	@include('layout/customer/footer')
+
+	@include('sweetalert::alert')
  
 	<!-- Jquery -->
     <script src="{{asset ('assets/frontend/js/jquery.min.js') }}"></script>

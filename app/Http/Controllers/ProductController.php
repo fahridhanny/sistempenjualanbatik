@@ -14,11 +14,6 @@ use MultipleIterator;
 
 class ProductController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function product(){
         $ukuran = Product::join('ukurans', 'ukurans.id_product', '=', 'products.id')
                             ->join('categories', 'products.id_category', '=' , 'categories.id')                    

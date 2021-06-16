@@ -65,4 +65,10 @@ class UserController extends Controller
         ];
         return view('pages/admin/user', $data);
     }
+    public function hapusUser($id){
+        $user = User::where('id', $id)->first();
+        $user->delete();
+        
+        return redirect('/user');
+    }
 }

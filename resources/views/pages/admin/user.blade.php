@@ -32,6 +32,7 @@
                                     <th>No. Telp</th>
                                     <th>Negara Asal</th>
                                     <th>Email</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -43,6 +44,7 @@
                                     <td>{{ $data->no_telp }}</td>
                                     <td>{{ $data->negara_asal }}</td>
                                     <td>{{ $data->email }}</td>
+                                    <td><a href="/user/hapus/{{ $data->id }}" class="btn btn-danger">Hapus</a></td>
                                 </tr>
                                 @endforeach
                             </tbody>

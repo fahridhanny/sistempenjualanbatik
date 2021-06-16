@@ -54,4 +54,5 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/profile/admin', [UserController::class, 'profileAdmin']);
     Route::post('/ubah/profile/admin', [UserController::class, 'ubahProfileAdmin']);
     Route::get('/user', [UserController::class, 'user']);
+    Route::get('/user/hapus/{id}', [UserController::class, 'hapusUser']);
 });

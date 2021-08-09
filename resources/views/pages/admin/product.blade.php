@@ -40,6 +40,10 @@
                             </thead>
                             <tbody>
                                 @foreach ($products as $no => $data)
+                                <?php 
+                                    $nama_product = base64_encode($data->nama_product);
+                                    $ukuran = base64_encode($data->ukuran);
+                                ?>
                                 <tr>
                                     <td>{{ $products->firstItem()+$no }}</td>
                                     <td>{{ $data->nama_product }}</td>
@@ -49,8 +53,8 @@
                                     <td>Rp. {{ number_format($data->harga) }}</td>
                                     <td>{{ $data->desk }}</td>
                                     <td><img src="{{url('assets/frontend/images/'.$data->gambar) }}" alt="" width="80px"></td>
-                                    <td><a href="/edit/product/{{ $data->nama_product }}/{{ $data->ukuran }}" class="btn btn-primary">Edit</a></td>
-                                    <td><a href="/hapus/product/{{ $data->nama_product }}/{{ $data->ukuran }}" class="btn btn-danger">Hapus</a></td>
+                                    <td><a href="/edit/product/{{ $nama_product }}/{{ $ukuran }}" class="btn btn-primary">Edit</a></td>
+                                    <td><a href="/hapus/product/{{ $nama_product }}/{{ $ukuran }}" class="btn btn-danger">Hapus</a></td>
                                 </tr>
                                 @endforeach
                             </tbody>

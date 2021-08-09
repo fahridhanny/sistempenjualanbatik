@@ -37,6 +37,9 @@
                             </thead>
                             <tbody>
                                 @foreach ($user as $no => $data)
+                                <?php  
+                                    $user_id = base64_encode($data->id);
+                                ?>
                                 <tr>
                                     <td>{{ $user->firstItem()+$no }}</td>
                                     <td>{{ $data->name }}</td>
@@ -44,7 +47,7 @@
                                     <td>{{ $data->no_telp }}</td>
                                     <td>{{ $data->negara_asal }}</td>
                                     <td>{{ $data->email }}</td>
-                                    <td><a href="/user/hapus/{{ $data->id }}" class="btn btn-danger">Hapus</a></td>
+                                    <td><a href="/user/hapus/{{ $user_id }}" class="btn btn-danger">Hapus</a></td>
                                 </tr>
                                 @endforeach
                             </tbody>

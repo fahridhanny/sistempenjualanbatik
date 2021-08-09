@@ -42,10 +42,10 @@
 									<div class="form-inner">
 										
 										<?php 
-											$pilihStok;
+											$id_produk = base64_encode($product->id);
 										?>
 
-										<form action="/pesanan/{{ $product->id }}" method="POST">
+										<form action="/pesanan/{{ $id_produk }}" method="POST">
 										@csrf
 
 										<table class="table">

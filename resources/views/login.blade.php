@@ -43,7 +43,8 @@
                     </div>          
                 </div>
                 <div class="footer">                                                               
-                    <button type="submit" class="btn btn-block" style="background:#F7941D"><p style="color: white;">Sign in</p></button>  
+                    <button type="submit" class="btn btn-block" style="background:#F7941D"><p style="color: white;">Sign in</p></button>
+                    <a href="{{ route('password.request') }}" class="text-center">Lupa Password ?</a><br> 
                     <a href="{{ route('register') }}" class="text-center">Belum punya akun ?Daftar disini</a>
                 </div>
             </form>

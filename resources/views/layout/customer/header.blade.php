@@ -18,7 +18,7 @@
                 <div class="col-lg-4 col-md-12 col-12">
                     <!-- Logo -->
                     <div>
-                        <a href="/"><img src="{{url ('assets/frontend/images/logo shella batik.png') }}" alt="logo" width="280" height="32"></a>
+                        <a href="/"><img src="{{url ('assets/frontend/images/logo_batik.png') }}" alt="logo" width="120" height="32"></a>
                     </div>
                     <!--/ End Logo -->
                 </div>
@@ -28,7 +28,7 @@
                         <div class="sinlge-bar">
                             <ul class="list-main">
                                 @if (Route::has('register'))
-                                    <li><i class="ti-user"></i> <a href="{{ route('register') }}">Daftar</a></li>
+                                    <li><i class="ti-user"></i> <a href="{{ route('register') }}">Register</a></li>
                                 @endif
                                 @if (Route::has('login'))
                                     <li><i class="ti-power-off"></i><a href="{{ route('login') }}">Login</a></li>
@@ -39,6 +39,8 @@
                             <?php
                                 $pesanan_detail;
                                 $pesanan = App\Models\Pesanan::where('user_id', auth()->user()->id)->where('status', 0)->first();
+                                $transaksi = App\Models\Pesanan::where('user_id', auth()->user()->id)
+                                                            ->where('status', 1)->first();
                                 if (!empty($pesanan)) {
                                     $pesanan_detail = App\Models\PesananDetail::where('pesanan_id', $pesanan->id)->count();
                                     $get_pesanan_detail = App\Models\PesananDetail::join('pesanans', 'pesanan_details.pesanan_id', '=', 'pesanans.id')
@@ -48,6 +50,14 @@
                             ?>
                         <div class="sinlge-bar">
                             <a href="/profile" class="single-icon"><i class="fas fa-user"></i></a>
+                        </div>
+                        <div class="sinlge-bar">
+                            <a href="/transaksi" class="single-icon">
+                                <i class="fas fa-dolly-flatbed"></i>
+                                @if($transaksi)
+                                    <span class="total-count">!</span>
+                                @endif
+                            </a>
                         </div>
                         <div class="sinlge-bar shopping">
                             <a href="/pesanan" class="single-icon"><i class="fas fa-shopping-cart"></i> 
@@ -123,7 +133,7 @@
                                                         <a href="/{{ $item->nama_category }}">{{ $item->nama_category }}</a>
                                                     </li>
                                                 @endforeach
-                                                <li class="{{ request()->is('about') ? 'active' : '' }}"><a href="/about">Tentang Kami</a></li>
+                                                <li class="{{ request()->is('about') ? 'active' : '' }}"><a href="/about">About Me</a></li>
                                             </ul>
                                     </div>
                                 </div>

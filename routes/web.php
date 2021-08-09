@@ -18,7 +18,18 @@ use Illuminate\Support\Facades\Route;
 */
 Auth::routes();
 
+Route::post('/notification', [PesananController::class, 'notification']);
+Route::get('/finish', [PesananController::class, 'finish']);
+Route::get('/unfinish', [PesananController::class, 'unfinish']);
+Route::get('/error', [PesananController::class, 'error']);
+
+Route::get('/resetPassword', [UserController::class, 'resetPassword']);
+Route::get('/gantiPassword/{id}', [UserController::class, 'gantiPassword']);
+Route::post('/kirimEmail', [UserController::class, 'kirimEmail']);
+Route::post('/ubahPassword/{id}', [UserController::class, 'ubahPassword']);
+
 Route::group(['middleware' => 'auth_admin'], function () {
+    
     // home
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/man', [HomeController::class, 'categoriesMan']);
@@ -28,6 +39,8 @@ Route::group(['middleware' => 'auth_admin'], function () {
 });
 Route::group(['middleware' => 'customer'], function () {
     Route::group(['middleware' => 'auth'], function () {
+        Route::get('/transaksi', [PesananController::class, 'transaksi']);
+        Route::get('/cancel/{id}', [PesananController::class, 'cancel']);
         // pesanan
         Route::get('/pesanan', [PesananController::class, 'getPesanan']);
         Route::get('/pesanan/detail/{id}', [PesananController::class, 'pesananDetail']);
@@ -36,8 +49,9 @@ Route::group(['middleware' => 'customer'], function () {
         Route::get('/pesanan/{id}/{ukuran}', [PesananController::class, 'mengambilDataUkuranById']);
         //checkout
         Route::post('/checkout/product', [PesananController::class, 'checkoutProduct']);
+        Route::get('/cekOngkir/{id}', [PesananController::class, 'cekOngkir']);
         Route::get('/checkout', [PesananController::class, 'checkout']);
-        Route::post('/buatPesanan', [PesananController::class, 'buatPesanan']);
+        Route::get('/buatPesanan', [PesananController::class, 'buatPesanan']);
         //profile
         Route::get('/profile', [UserController::class, 'profile']);
         Route::post('/ubahProfile', [UserController::class, 'ubahProfile']);

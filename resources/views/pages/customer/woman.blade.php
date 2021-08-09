@@ -24,7 +24,8 @@
             <div class="col-xl-3 col-lg-4 col-md-4 col-12">
                 <div class="single-product">
                     <div class="product-img">
-                        <a href="/pesanan/detail/{{ $data->id }}">
+                        <?php $dataProduct = base64_encode($data->id) ?>
+                        <a href="/pesanan/detail/{{ $dataProduct }}">
                             <img class="default-img" src="{{ url('assets/frontend/images/'.$data->gambar) }}" 
                             alt="{{ $data->nama_product }}" style="height: 270px;">
                         </a>

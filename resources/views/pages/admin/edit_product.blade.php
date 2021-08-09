@@ -24,8 +24,12 @@
                     <div class="box-header">
                         <h3 class="box-title">Edit Product</h3>
                     </div><!-- /.box-header -->
+                    <?php 
+                        $id_product = base64_encode($product->id);
+                        $ukuran_product = base64_encode($ukuran->ukuran);
+                    ?>
                     <!-- form start -->
-                    <form role="form" action="/edit/product/proses/{{ $product->id }}/{{ $ukuran->ukuran }}" method="POST" enctype="multipart/form-data">
+                    <form role="form" action="/edit/product/proses/{{ $id_product }}/{{ $ukuran_product }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="box-body">
                             <div class="form-group">
@@ -53,6 +57,10 @@
                             <div class="form-group">
                                 <label for="">Harga</label>
                                 <input type="number" class="form-control" placeholder="Harga" name="harga" value="{{ $product->harga }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Berat</label>
+                                <input type="number" class="form-control" placeholder="Harga" name="berat" value="{{ $product->berat }}" required>
                             </div>
                             <div class="form-group">
                                 <label for="">Deskripsi</label>

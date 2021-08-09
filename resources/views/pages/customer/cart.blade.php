@@ -40,6 +40,10 @@
                     <tbody>
                         @if (!empty($pesanan))
                         @foreach ($pesanan_detail as $item)
+                        <?php 
+                            $id_product = base64_encode($item->product_id);
+                            $ukuran = base64_encode($item->ukuran);
+                        ?>
                         <tr>
                             <td class="image" data-title="No"><img src="{{ url('assets/frontend/images/'.$item->gambar) }}" alt="#"></td>
                             <td class="product-des" data-title="Description">
@@ -64,7 +68,7 @@
                                 <!--/ End Input Order -->
                             </td>
                             <td class="total-amount" data-title="Total"><span>Rp. {{ number_format($item->jumlah_harga) }}</span></td>
-                            <td class="action" data-title="Remove"><a href="/pesanan/detail/hapus/{{ $item->product_id }}/{{ $item->ukuran }}"><i class="ti-trash remove-icon"></i></a></td>
+                            <td class="action" data-title="Remove"><a href="/pesanan/detail/hapus/{{ $id_product }}/{{ $ukuran }}"><i class="ti-trash remove-icon"></i></a></td>
                         </tr>
                         @endforeach
                         @endif

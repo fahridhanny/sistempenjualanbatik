@@ -16,7 +16,7 @@ class ProductController extends Controller
 {
     public function product(){
         $ukuran = Product::join('ukurans', 'ukurans.id_product', '=', 'products.id')
-                            ->join('categories', 'products.id_category', '=' , 'categories.id')                    
+                            ->join('categories', 'products.id_category', '=' , 'categories.id')    
                             ->paginate(5);
         $data = [
             'products' => $ukuran
@@ -68,65 +68,101 @@ class ProductController extends Controller
         return redirect('/product');
     }
     public function editProduct($nama_product, $ukuran){
+        $nama_product = base64_decode($nama_product);
+        $ukuran = base64_decode($ukuran);
+
         $product = Product::where('nama_product', $nama_product)->first();
-        $ukuran = Ukuran::where('id_product', $product->id)->where('ukuran', $ukuran)->first();
-        $category = Category::all();
-        $data = [
-            'product' => $product,
-            'ukuran' => $ukuran,
-            'category' => $category
-        ];
-        return view('pages/admin/edit_product', $data);
+        if($product){
+            $ukuran = Ukuran::where('id_product', $product->id)->where('ukuran', $ukuran)->first();
+            if($ukuran){
+                $category = Category::all();
+                $data = [
+                    'product' => $product,
+                    'ukuran' => $ukuran,
+                    'category' => $category
+                ];
+                return view('pages/admin/edit_product', $data);
+            }else{
+                return redirect('/dashboard');
+            }
+        }else{
+            return redirect('/dashboard');
+        }
     }
     public function prosesEditProduct($id, $ukuran, Request $request){
-        
-        if (empty($request->gambar)) {
-            $product = Product::where('id', $id)->first();
-            $product->nama_product = $request->nama_product;
-            $product->id_category = $request->id_category;
-            $product->harga = $request->harga;
-            $product->save();
+        $id = base64_decode($id);
+        $ukuran = base64_decode($ukuran);
+
+        $product = Product::where('id', $id)->first();
+        if($product){
+            $dataUkuran = Ukuran::where('id_product', $product->id)->where('ukuran', $ukuran)->first();
+            if ($dataUkuran) {
+                if (empty($request->file("gambar"))) {
+                    $product = Product::where('id', $id)->first();
+                    $product->nama_product = $request->nama_product ? $request->nama_product : $product->nama_product;
+                    $product->id_category = $request->id_category ? $request->id_category : $product->id_category;
+                    $product->desk = $request->desk ? $request->desk : $product->desk;
+                    $product->berat = $request->berat ? $request->berat : $product->berat;
+                    $product->harga = $request->harga ? $request->harga : $product->harga;
+                    $product->save();
+                }else{
+                    $product = Product::where('id', $id)->first();
+
+                    $gambar = $request->gambar ? $request->gambar : $produc->gambar;
+                    $gambarName = $request->nama_product.'.'.$gambar->extension();
+                    $gambar->move(public_path('assets/frontend/images'), $gambarName);
+
+                    $product->nama_product = $request->nama_product ? $request->nama_product : $product->nama_product;
+                    $product->id_category = $request->id_category ? $request->id_category : $product->id_category;
+                    $product->desk = $request->desk ? $request->desk : $product->desk;
+                    $product->berat = $request->berat ? $request->berat : $product->berat;
+                    $product->harga = $request->harga ? $request->harga : $product->harga;
+                    $product->gambar = $gambarName;
+                    $product->save();
+                }
+                
+                $productUkuran = Ukuran::where('id_product', $id)->where('ukuran', $ukuran)->first();
+                $productUkuran->ukuran = $request->ukuran;
+                $productUkuran->stok = $request->stok;
+                $productUkuran->save();
+
+                return redirect('/product');       
+            }else{
+                return redirect('/dashboard');
+            }
         }else{
-            
-            $gambar = $request->gambar;
-            $gambarName = $request->nama_product.'.'.$gambar->extension();
-            $gambar->move(public_path('assets/frontend/images'), $gambarName);
-
-            $product = Product::where('id', $id)->first();
-            $product->nama_product = $request->nama_product;
-            $product->id_category = $request->id_category;
-            $product->harga = $request->harga;
-            $product->gambar = $gambarName;
-            $product->save();
+            return redirect('/dashboard');
         }
-        
-        $productUkuran = Ukuran::where('id_product', $id)->where('ukuran', $ukuran)->first();
-        $productUkuran->ukuran = $request->ukuran;
-        $productUkuran->stok = $request->stok;
-        $productUkuran->save();
-
-        return redirect('/product');
     }
     public function hapusProduct($nama_product, $ukuran){
+        $nama_product = base64_decode($nama_product);
+        $ukuran = base64_decode($ukuran);
 
         $product = Product::where('nama_product', $nama_product)->first();
-
-        $pesanans = Pesanan::where('status', 0)->get();
-        foreach ($pesanans as $pesanan) {
-            $pesanan_detail = PesananDetail::where('pesanan_id', $pesanan->id)
-                                        ->where('product_id', $product->id)
-                                        ->where('ukuran', $ukuran)->get();
-            if($pesanan_detail){
-                foreach ($pesanan_detail as $value) {
-                    $value->delete();
+        if($product){
+            $dataUkuran = Ukuran::where('id_product', $product->id)->where('ukuran', $ukuran)->first();
+            if($dataUkuran){
+                $pesanans = Pesanan::where('status', 0)->get();
+                foreach ($pesanans as $pesanan) {
+                    $pesanan_detail = PesananDetail::where('pesanan_id', $pesanan->id)
+                                                ->where('product_id', $product->id)
+                                                ->where('ukuran', $ukuran)->get();
+                    if($pesanan_detail){
+                        foreach ($pesanan_detail as $value) {
+                            $value->delete();
+                        }
+                    }
+                    
                 }
+                $deleteUkuran = Ukuran::where('id_product', $product->id)->where('ukuran', $ukuran)->first();
+                $deleteUkuran->delete();
+
+                return redirect('/product');
+            }else{
+                return redirect('/dashboard');    
             }
-            
+        }else{
+            return redirect('/dashboard');
         }
-
-        $ukuran = Ukuran::where('id_product', $product->id)->where('ukuran', $ukuran)->first();
-        $ukuran->delete();
-
-        return redirect('/product');
     }
 }
